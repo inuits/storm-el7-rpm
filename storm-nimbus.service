@@ -1,0 +1,19 @@
+[Unit]
+Description=Storm Nimbus
+After=network.target
+
+[Service]
+User=storm
+Group=storm
+EnvironmentFile=/etc/sysconfig/storm
+ExecStart=/opt/storm/bin/storm  --config /etc/storm/storm.yaml nimbus
+Restart=on-failure
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=storm-nimbus
+SyslogFacility=local7
+SyslogLevel=debug
+#SyslogLevelPrefix=true
+
+[Install]
+WantedBy=multi-user.target
