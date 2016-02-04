@@ -16,11 +16,12 @@ URL: http://storm.apache.org/
 Source0: apache-storm-%{version}.tar.gz
 Source1: storm-nimbus.service
 Source2: storm-supervisor.service
-Source3: storm-ui.service
-Source4: storm.logrotate
-Source5: storm.yaml
-Source6: storm_env.ini
-Source7: storm.sysconfig
+Source3: storm-logviewer.service
+Source4: storm-ui.service
+Source5: storm.logrotate
+Source6: storm.yaml
+Source7: storm_env.ini
+Source8: storm.sysconfig
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Prefix: %{_prefix}
 Vendor: Apache Software Foundation
@@ -61,10 +62,11 @@ cp -pr public $RPM_BUILD_ROOT%{_prefix}/storm/
 install -p -D -m 755 %{S:1} $RPM_BUILD_ROOT%{_unitdir}/
 install -p -D -m 755 %{S:2} $RPM_BUILD_ROOT%{_unitdir}/
 install -p -D -m 755 %{S:3} $RPM_BUILD_ROOT%{_unitdir}/
-install -p -D -m 644 %{S:4} $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/storm
-install -p -D -m 644 %{S:5} $RPM_BUILD_ROOT%{_conf_dir}/
+install -p -D -m 755 %{S:4} $RPM_BUILD_ROOT%{_unitdir}/
+install -p -D -m 644 %{S:5} $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/storm
 install -p -D -m 644 %{S:6} $RPM_BUILD_ROOT%{_conf_dir}/
-install -p -D -m 644 %{S:7} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/storm
+install -p -D -m 644 %{S:7} $RPM_BUILD_ROOT%{_conf_dir}/
+install -p -D -m 644 %{S:8} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/storm
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -78,17 +80,20 @@ fi
 %post
 %systemd_post storm-nimbus.service
 %systemd_post storm-supervisor.service
+%systemd_post storm-logviewer.service
 %systemd_post storm-ui.service
 
 %preun
 %systemd_preun storm-nimbus.service
 %systemd_preun storm-supervisor.service
+%systemd_preun storm-logviewer.service
 %systemd_preun storm-ui.service
 
 %files
 %defattr(-,root,root)
 %{_unitdir}/storm-nimbus.service
 %{_unitdir}/storm-supervisor.service
+%{_unitdir}/storm-logviewer.service
 %{_unitdir}/storm-ui.service
 %config(noreplace) %{_sysconfdir}/logrotate.d/storm
 %config(noreplace) %{_sysconfdir}/sysconfig/storm
