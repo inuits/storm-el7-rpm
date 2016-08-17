@@ -1,6 +1,6 @@
 .PHONY:	rpm clean
 
-VERSION ?= 1.0.0
+VERSION ?= 1.0.2
 BUILD_NUMBER ?= 1
 SOURCE = apache-storm-$(VERSION).tar.gz
 TOPDIR = /tmp/storm-rpm
