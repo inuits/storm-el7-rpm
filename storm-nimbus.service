@@ -11,7 +11,6 @@ Restart=on-failure
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=storm-nimbus
-SyslogFacility=local7
 SyslogLevel=debug
 #SyslogLevelPrefix=true
 
